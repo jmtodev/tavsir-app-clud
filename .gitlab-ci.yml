@@ -1,0 +1,48 @@
+before_script:
+  - echo "Before script"
+  - cd /home/jmto/var/www/html/tavsir-selforder/ #your project path
+
+building:
+  stage: build
+  script:
+    - eval $(ssh-agent -s)
+    - ssh-agent bash -c 'ssh-add /home/jmto/.ssh/token_ina && git pull'
+    # - git pull && pm2 restart tavsir-selforder'
+
+    # - git pull
+    # - composer install
+    # - php artisan cache:clear
+    # - php artisan config:clear
+    # - find /var/www/tavsir-api -type f -exec chmod 664 {} \;
+    # - find /var/www/tavsir-api -type d -exec chmod 775 {} \;
+
+deploying:
+  stage: deploy
+  script:
+    - echo "Deployed"
+
+  only:
+    - dev_ina
+ 
+# image: ubuntu:latest
+# before_script:
+#   # - apt-get update -qq
+#   # - apt-get install -qq git
+#   # Setup SSH deploy keys
+#   - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+#   - eval $(ssh-agent -s)
+#   - ssh-add <(echo "$SSH_PRIVATE_KEY")
+#   - mkdir -p ~/.ssh
+#   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+
+# deploy_staging:
+#   type: deploy
+#   environment:
+#     name: production
+#     url: tavsir-api
+#   script:
+#     - ssh -o StrictHostKeyChecking=no jmto@172.16.4.47 "cd /var/www/html/tavsir-api && git checkout main && git pull origin main && /usr/bin/composer install && artisan migrate && exit"
+#   only:
+#     - main
+
+  
