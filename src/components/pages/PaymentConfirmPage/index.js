@@ -406,12 +406,7 @@ const PaymentConfirmPage = () => {
     //     elementRef.current.style.display = "none";
     //   });
 
-    history.push({
-      pathname: "./show-receipt",
-      state: {
-        data: cartData,
-      },
-    });
+    history.push("/show-receipt/?trans_order_id=" + cartData.id);
   };
 
   return (
