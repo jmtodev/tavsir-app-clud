@@ -93,6 +93,8 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     gap: "10px",
+    fontSize: "14px",
+    color: "gray",
     marginTop: "15px",
     marginBottom: "15px",
     paddingLeft: "20px",
@@ -100,13 +102,14 @@ const styles = {
   },
   row: {
     display: "flex",
+    flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
-    padding: "8px 0",
+    gap: "10px",
+    // borderBottom: '1px solid #ddd',
+    padding: "5px 0",
   },
   column: {
-    flex: "1",
-    textAlign: "left",
+    flex: 1,
   },
   quantity: {
     flex: "0 0 fit-content",
@@ -235,58 +238,63 @@ export const StrukTransaksi = ({ data }) => {
           ))}
       </table> */}
       <div style={styles.container}>
-        {/* Header Row */}
-        <div style={{ ...styles.row, fontWeight: "bold" }}>
+        {/* Header */}
+        <div style={styles.row}>
           <div style={styles.column}>Produk</div>
-          <div style={styles.quantity}>Qty</div>
+          <div style={{ ...styles.column, textAlign: "center" }}>
+            <span>Qty</span>
+          </div>
           <div style={styles.column}>Harga</div>
-          <div style={styles.price}>Total</div>
+          <div style={{ ...styles.column, textAlign: "right" }}>Total</div>
         </div>
 
-        {/* Data Rows */}
+        {/* Data */}
         {data &&
           data.detil &&
-          data.detil.map((item, index) => (
-            <div key={index}>
-              {/* Main Product Row */}
+          data.detil.map((item) => (
+            <>
+              {/* Produk */}
               <div style={styles.row}>
                 <div style={styles.column}>{item.product_name}</div>
-                <div style={styles.quantity}>{`${item.product_qty}x`}</div>
+                <div style={{ ...styles.column, textAlign: "center" }}>
+                  {item.product_qty}
+                </div>
                 <div style={styles.column}>
                   {convertCurrency(item.product_base_price)}
                 </div>
-                <div style={styles.price}>
+                <div style={{ ...styles.column, textAlign: "right" }}>
                   {convertCurrency(item.product_total_price)}
                 </div>
               </div>
 
-              {/* Customize Options */}
+              {/* Customize */}
               {item.customize.length > 0 &&
-                item.customize.map((customizeItem, customizeIndex) => (
-                  <div style={styles.row} key={customizeIndex}>
-                    <div
-                      style={styles.column}
-                    >{`${customizeItem.customize_name}: ${customizeItem.pilihan_name}`}</div>
-                    <div style={styles.quantity}></div>
+                item.customize.map((customize) => (
+                  <div style={styles.row} key={customize.customize_name}>
                     <div style={styles.column}>
-                      {convertCurrency(customizeItem.pilihan_price)}
+                      {`${customize.customize_name}: ${customize.pilihan_name}`}
                     </div>
-                    <div style={styles.price}></div>
+                    <div style={{ ...styles.column, textAlign: "center" }} />
+                    <div style={styles.column}>
+                      {convertCurrency(customize.pilihan_price)}
+                    </div>
+                    <div style={{ ...styles.column, textAlign: "right" }} />
                   </div>
                 ))}
 
-              {/* Product Note */}
+              {/* Note */}
               {item.product_note && (
                 <div style={styles.row}>
                   <div style={styles.column}>{item.product_note}</div>
-                  <div style={styles.quantity}></div>
-                  <div style={styles.column}></div>
-                  <div style={styles.price}></div>
+                  <div style={{ ...styles.column, textAlign: "center" }} />
+                  <div style={styles.column} />
+                  <div style={{ ...styles.column, textAlign: "right" }} />
                 </div>
               )}
-            </div>
+            </>
           ))}
       </div>
+
       <table style={tableWrapper}>
         <tr style={{ columnSpan: 2 }}>
           <td style={{ textAlign: "left" }}>Subtotal</td>
