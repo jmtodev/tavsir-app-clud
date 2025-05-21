@@ -26,6 +26,7 @@ import mandiri from "../../../../public/mandiri.png";
 import { VaBniContent } from "../../organisms/VaBniContent";
 import { VaBriContent } from "../../organisms/VaBriContent";
 import { VaMandiriContent } from "../../organisms/VaMandiriContent";
+import { VaBankTransfer } from "../../organisms/VaBankTransfer";
 
 let user = {};
 
@@ -99,7 +100,7 @@ const PaymentPage = () => {
         { headers }
       )
       .then((response) => {
-        console.log(response)
+        console.log(response);
         Swal.close();
         const { data } = response;
         setCartData(data);
@@ -249,7 +250,11 @@ const PaymentPage = () => {
             Total Bayar
           </Text>
           <Text title responsive breakpoint={200} color="#FF2020">
-            {convertCurrency( cartData.service_fee ? (cartData.total + (methodData.fee || 0)) - cartData.service_fee : cartData.total + (methodData.fee || 0) )}
+            {convertCurrency(
+              cartData.service_fee
+                ? cartData.total + (methodData.fee || 0) - cartData.service_fee
+                : cartData.total + (methodData.fee || 0)
+            )}
           </Text>
           <Box
             sx={{
@@ -349,15 +354,16 @@ const PaymentPage = () => {
           </Box>
           {methodData.code === "BNI" ? (
             <VaBniContent />
-          ) : methodData.code === "BRI" ? (
+          ) : methodData.code === "BRI" && methodData.id != 14 ? (
             <VaBriContent />
           ) : methodData.code === "MANDIRI" ? (
             <VaMandiriContent />
+          ) : methodData.id == 14 ? (
+            <VaBankTransfer />
           ) : null}
         </Container>
       </Box>
     </MenuPageTemplate>
-    
   );
 };
 
