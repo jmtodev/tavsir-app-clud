@@ -134,7 +134,7 @@ const CheckoutPage = () => {
           });
         } else if (
           data.status === "WAITING_PAYMENT" &&
-          data.payment?.va_number &&
+          data.payment &&
           !state.data?.isFlo
         ) {
           console.log("laaahh");

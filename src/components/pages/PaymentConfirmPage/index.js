@@ -308,7 +308,6 @@ const PaymentConfirmPage = () => {
     if (validateCookiey("user")) {
       setPaymentData(state.data);
       setMethodData(state.method);
-
       setCartData(state.cart);
 
       removeCookie("order");
