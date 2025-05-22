@@ -32,7 +32,9 @@ import BniPaymentModal from "../../organisms/BniPaymentModal";
 import BriPaymentModal from "../../organisms/BriPaymentModal";
 import TransferBankModal from "../../organisms/BankTransferModal";
 import MandiriPaymentModal from "../../organisms/MandiriPaymentModal";
+
 import { StrukTransaksi } from "../../templates/StrukTransaksi";
+import VaBankTransferModal from "../../organisms/TranferPaymentModal";
 
 const Container = styled.div`
   flex-shrink: 0;
@@ -76,6 +78,7 @@ const PaymentConfirmPage = () => {
   const [showTransferPaymentModal, setShowTransferPaymentModal] =
     useState(false);
   const [showMandiriPaymentModal, setShowMandiriPaymentModal] = useState(false);
+  const [showVaBankTransfer, setShowVaBankTransfer] = useState(false);
   const elementRef = useRef(null);
   async function getPaymentStatus(id, isCheckStatus = false) {
     console.log(isCheckStatus);
@@ -330,6 +333,7 @@ const PaymentConfirmPage = () => {
     }
   }, []);
 
+
   const currCard = (card, id = null) => {
     const xCard = card.toLowerCase();
     if (xCard === "mandiri") {
@@ -340,6 +344,8 @@ const PaymentConfirmPage = () => {
     }
     if (xCard === "bri" && id != 14) {
       return bri;
+    } else if (id === 14) {
+      return others;
     }
     if (id == 14) {
       return others;
@@ -415,7 +421,12 @@ const PaymentConfirmPage = () => {
     //     elementRef.current.style.display = "none";
     //   });
 
-    history.push("/show-receipt/?trans_order_id=" + cartData.id);
+    history.push({
+      pathname: "./show-receipt",
+      state: {
+        data: cartData,
+      },
+    });
   };
 
   return (
