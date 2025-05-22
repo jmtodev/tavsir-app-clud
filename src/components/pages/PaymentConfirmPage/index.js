@@ -24,11 +24,13 @@ import cc from "../../../../public/cc.png";
 import bni from "../../../../public/bni.png";
 import bri from "../../../../public/bri.png";
 import mandiri from "../../../../public/mandiri.png";
+import others from "../../../../public/others.png";
 
 import PaymentDoneModal from "../../organisms/DonePaymentModal";
 import UnrecievedPaymentModal from "../../organisms/UnrecievedPaymentModal";
 import BniPaymentModal from "../../organisms/BniPaymentModal";
 import BriPaymentModal from "../../organisms/BriPaymentModal";
+import TransferBankModal from "../../organisms/BankTransferModal";
 import MandiriPaymentModal from "../../organisms/MandiriPaymentModal";
 import { StrukTransaksi } from "../../templates/StrukTransaksi";
 
@@ -71,6 +73,8 @@ const PaymentConfirmPage = () => {
   const [showWaitingPayment, setShowWaitingPayment] = useState(false);
   const [showBniPaymentModal, setShowBniPaymentModal] = useState(false);
   const [showBriPaymentModal, setShowBriPaymentModal] = useState(false);
+  const [showTransferPaymentModal, setShowTransferPaymentModal] =
+    useState(false);
   const [showMandiriPaymentModal, setShowMandiriPaymentModal] = useState(false);
   const elementRef = useRef(null);
   async function getPaymentStatus(id, isCheckStatus = false) {
@@ -326,7 +330,7 @@ const PaymentConfirmPage = () => {
     }
   }, []);
 
-  const currCard = (card) => {
+  const currCard = (card, id = null) => {
     const xCard = card.toLowerCase();
     if (xCard === "mandiri") {
       return mandiri;
@@ -334,8 +338,11 @@ const PaymentConfirmPage = () => {
     if (xCard === "bni") {
       return bni;
     }
-    if (xCard === "bri") {
+    if (xCard === "bri" && id != 14) {
       return bri;
+    }
+    if (id == 14) {
+      return others;
     }
     return cc;
   };
@@ -358,13 +365,15 @@ const PaymentConfirmPage = () => {
     });
   };
 
-  const onPaymentStep = (cc) => {
+  const onPaymentStep = (cc, id = null) => {
     if (cc === "BNI") {
       setShowBniPaymentModal(true);
-    } else if (cc === "BRI") {
+    } else if (cc === "BRI" && id != 14) {
       setShowBriPaymentModal(true);
     } else if (cc === "MANDIRI") {
       setShowMandiriPaymentModal(true);
+    } else if (id == 14) {
+      setShowTransferPaymentModal(true);
     } else {
       Swal.fire("under developement", "", "info");
     }
@@ -460,7 +469,11 @@ const PaymentConfirmPage = () => {
                   {methodData.name}
                 </Text>
                 <MenuIcon
-                  src={methodData?.code ? currCard(methodData.code) : cc}
+                  src={
+                    methodData?.code
+                      ? currCard(methodData.code, methodData.id)
+                      : cc
+                  }
                 />
               </Box>
               <Box
@@ -530,7 +543,7 @@ const PaymentConfirmPage = () => {
               </Box>
               <IconButton
                 sx={{ width: "100%" }}
-                onClick={() => onPaymentStep(methodData.code)}
+                onClick={() => onPaymentStep(methodData.code, methodData.id)}
               >
                 <Text responsive breakpoint={200} color="#244280">
                   Lihat Cara Pembayaran
@@ -594,6 +607,10 @@ const PaymentConfirmPage = () => {
         <MandiriPaymentModal
           open={showMandiriPaymentModal}
           onClickClose={() => setShowMandiriPaymentModal(false)}
+        />
+        <TransferBankModal
+          open={showTransferPaymentModal}
+          onClickClose={() => setShowTransferPaymentModal(false)}
         />
       </MenuPageTemplate>
       <div id="receipt-print" ref={elementRef} style={{ display: "none" }}>
