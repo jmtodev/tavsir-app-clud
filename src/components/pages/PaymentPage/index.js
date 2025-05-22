@@ -26,7 +26,7 @@ import mandiri from "../../../../public/mandiri.png";
 import { VaBniContent } from "../../organisms/VaBniContent";
 import { VaBriContent } from "../../organisms/VaBriContent";
 import { VaMandiriContent } from "../../organisms/VaMandiriContent";
-import { VaBankTransfer } from "../../organisms/VaBankTransfer";
+import { VaTransferContent } from "../../organisms/VaTransferContent";
 
 let user = {};
 
@@ -359,7 +359,7 @@ const PaymentPage = () => {
           ) : methodData.code === "MANDIRI" ? (
             <VaMandiriContent />
           ) : methodData.id == 14 ? (
-            <VaBankTransfer />
+            <VaTransferContent />
           ) : null}
         </Container>
       </Box>

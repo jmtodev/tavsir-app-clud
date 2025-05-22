@@ -30,6 +30,7 @@ import PaymentDoneModal from "../../organisms/DonePaymentModal";
 import UnrecievedPaymentModal from "../../organisms/UnrecievedPaymentModal";
 import BniPaymentModal from "../../organisms/BniPaymentModal";
 import BriPaymentModal from "../../organisms/BriPaymentModal";
+import TransferBankModal from "../../organisms/BankTransferModal";
 import MandiriPaymentModal from "../../organisms/MandiriPaymentModal";
 
 import { StrukTransaksi } from "../../templates/StrukTransaksi";
@@ -74,6 +75,8 @@ const PaymentConfirmPage = () => {
   const [showWaitingPayment, setShowWaitingPayment] = useState(false);
   const [showBniPaymentModal, setShowBniPaymentModal] = useState(false);
   const [showBriPaymentModal, setShowBriPaymentModal] = useState(false);
+  const [showTransferPaymentModal, setShowTransferPaymentModal] =
+    useState(false);
   const [showMandiriPaymentModal, setShowMandiriPaymentModal] = useState(false);
   const [showVaBankTransfer, setShowVaBankTransfer] = useState(false);
   const elementRef = useRef(null);
@@ -330,7 +333,8 @@ const PaymentConfirmPage = () => {
     }
   }, []);
 
-  const currCard = (card, id) => {
+
+  const currCard = (card, id = null) => {
     const xCard = card.toLowerCase();
     if (xCard === "mandiri") {
       return mandiri;
@@ -341,6 +345,9 @@ const PaymentConfirmPage = () => {
     if (xCard === "bri" && id != 14) {
       return bri;
     } else if (id === 14) {
+      return others;
+    }
+    if (id == 14) {
       return others;
     }
     return cc;
@@ -364,7 +371,7 @@ const PaymentConfirmPage = () => {
     });
   };
 
-  const onPaymentStep = (cc, id) => {
+  const onPaymentStep = (cc, id = null) => {
     if (cc === "BNI") {
       setShowBniPaymentModal(true);
     } else if (cc === "BRI" && id != 14) {
@@ -372,7 +379,7 @@ const PaymentConfirmPage = () => {
     } else if (cc === "MANDIRI") {
       setShowMandiriPaymentModal(true);
     } else if (id == 14) {
-      setShowVaBankTransfer(true);
+      setShowTransferPaymentModal(true);
     } else {
       Swal.fire("under developement", "", "info");
     }
@@ -612,9 +619,9 @@ const PaymentConfirmPage = () => {
           open={showMandiriPaymentModal}
           onClickClose={() => setShowMandiriPaymentModal(false)}
         />
-        <VaBankTransferModal
-          open={showVaBankTransfer}
-          onClickClose={() => setShowVaBankTransfer(false)}
+        <TransferBankModal
+          open={showTransferPaymentModal}
+          onClickClose={() => setShowTransferPaymentModal(false)}
         />
       </MenuPageTemplate>
       <div id="receipt-print" ref={elementRef} style={{ display: "none" }}>
